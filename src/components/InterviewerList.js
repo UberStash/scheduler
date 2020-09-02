@@ -1,24 +1,23 @@
 import React from "react";
-import InterviewerListItem from "components/InterviewerListItem";
-import "components/InterviewerList.scss";
 
+import InterviewerListItem from "components/InterviewerListItem";
+
+import PropTypes from "prop-types";
+
+import "./InterviewerList.scss";
 
 export default function InterviewerList(props) {
-  let isSelected = false;
-  const setInterviewer = function () {
-    isSelected = !isSelected
-  }
-  const interviewers = props.interviewers.map(interviewer => {
-    console.log(props)
+  const { interviewers, value, onChange } = props;
 
+  const entityList = interviewers.map((entity) => {
+    const { id, name, avatar } = entity;
     return (
       <InterviewerListItem
-        key={interviewer.id}
-        name={interviewer.name}
-        avatar={interviewer.avatar}
-        selected={props.interviewer === interviewer.id}
-        setInterviewer={setInterviewer}
-        
+        key={id}
+        name={name}
+        avatar={avatar}
+        selected={id === value}
+        setInterviewer={(event) => onChange(id)}
       />
     );
   });
@@ -26,7 +25,12 @@ export default function InterviewerList(props) {
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
-      <ul className="interviewers__list">{interviewers}</ul>
+      <ul className="interviewers__list">{entityList}</ul>
     </section>
   );
 }
+
+InterviewerList.propTypes = {
+  value: PropTypes.number,
+  onChange: PropTypes.func.isRequired,
+};
