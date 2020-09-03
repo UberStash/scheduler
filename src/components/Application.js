@@ -6,103 +6,48 @@ import "components/Application.scss";
 import DayList from"components/DayList";
 import "components/Appointment"
 import Appointment from "components/Appointment";
+import { getAppointmentsForDay } from "helpers/selectors";
 
-
-
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 3,
-    time: "2pm",
-    interview: {
-      student: "Jane",
-      interviewer: {
-        id: 2,
-        name: "Prof Quack",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Bacchus",
-      interviewer: {
-        id: 3,
-        name: "Jet Li",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 1,
-    time: "4pm",
-  }
-];
-
-// const days = [
-//   {
-//     id: 1,
-//     name: "Monday",
-//     spots: 2,
-//   },
-//   {
-//     id: 2,
-//     name: "Tuesday",
-//     spots: 5,
-//   },
-//   {
-//     id: 3,
-//     name: "Wednesday",
-//     spots: 0,
-//   },
-// ];
+// trying to import the helper function to sort the array last question of day :( cant seem to import!!!!!!
 
 
 
 
 export default function Application(props) {
-
+  
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {}
   });
-
+  
   const setDay = day => setState({ ...state, day });
   const setDays = days => setState(prev => ({ ...prev, days }));
+  
+  const appointments = getAppointmentsForDay(state, state.day);
 
   useEffect(() => {
     console.log('fetch axios');
+
+  Promise.all([
+    Promise.resolve(
+      axios({ url: `http://localhost:8001/api/days`, method: 'GET'})
+  ),
+
+
+  Promise.resolve(
+    axios({ url: `http://localhost:8001/api/appointments`, method: 'GET'})  
+  )
+
+  ]).then((all) => {
+    setState(prev => ({ day: state.day, days: all[0].data, appointments: all[1].data}));
+  });
+
+}, [])
+
+
+
   
-  axios({
-    url: `http://localhost:8001/api/days`,
-    method: 'GET'
-  })
-  .then(result => {
-    setDays(result.data)
-  })
-  
-  }, [])
-
-
-
   const appointmentList = appointments.map(app => {
     return <Appointment key={app.id} {...app} />
   })
