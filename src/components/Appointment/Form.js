@@ -3,6 +3,7 @@ import Button from "components/Button";
 import InterviewerList from "components/InterviewerList"
 
 export default function Confirm(props) {
+  // console.log(props)
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [name, setName] =useState(props.name || '')
   
@@ -17,7 +18,9 @@ export default function Confirm(props) {
     props.onCancel();
   }
 
-
+function validate() {
+  props.onSave(name, interviewer)
+}
   
   return (
     <main className="appointment__card appointment__card--create">
@@ -28,7 +31,7 @@ export default function Confirm(props) {
         name={name}
         value={name}
         onChange={event => {setName(event.target.value)}}
-        type="text"
+        submitted={"false"}
         placeholder={"Enter Student Name"}
         
       />
@@ -42,7 +45,9 @@ export default function Confirm(props) {
   <section className="appointment__card-right">
     <section className="appointment__actions">
       <Button danger onClick={cancel}>Cancel</Button>
-      <Button confirm onClick={props.onSave}>Save</Button>
+      <Button confirm onClick={validate}
+      
+      >Save</Button>
     </section>
   </section>
 </main>
