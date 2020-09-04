@@ -8,15 +8,11 @@ export default function Confirm(props) {
   
   function reset() {
     setName("");
-    
     setInterviewer(null);
   }
   
   
   function cancel() {
-   
-   
-    
     reset();
     props.onCancel();
   }
