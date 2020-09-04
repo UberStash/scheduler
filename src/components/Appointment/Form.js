@@ -32,7 +32,7 @@ function validate() {
         value={name}
         onChange={event => {setName(event.target.value)}}
         submitted={"false"}
-        placeholder={"Enter Student Name"}
+        placeholder={ props.student || "Enter Student Name"}
         
       />
     </form>
