@@ -15,23 +15,22 @@ export function getAppointmentsForDay(state, day) {
 return arr
 }
 
-export function getInterview(state, interview) {
+
 
 // use find then map instead or use double foreach again
 
- if(interview) { 
- let obj = {
-    student: interview.student,
-    interviewer: {
-      id: interview.interviewer,
-      name: state.interviewers[interview.interviewer].name,
-      avatar: state.interviewers[interview.interviewer].avatar
-    }
-  
-  };
-    
-  return obj
+export function getInterview(state, interview) {
+  if (!interview) {
+    return null;
+  }
+  let interviewer = state.interviewers[interview.interviewer];
+  return { ...interview, interviewer };
 }
 
-return null
+export function getInterviewersByDay(state, day) {
+  let result = [];
+  let date = state.days.filter(value => value.name === day);
+  if (date.length === 0) return result;
+  result = date[0].interviewers.map(person => state.interviewers[person]);
+  return result;
 }

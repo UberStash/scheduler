@@ -6,7 +6,7 @@ import "components/Application.scss";
 import DayList from"components/DayList";
 import "components/Appointment"
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersByDay } from "helpers/selectors";
 
 // trying to import the helper function to sort the array last question of day :( cant seem to import!!!!!!
 
@@ -15,18 +15,27 @@ import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
 export default function Application(props) {
   
+
+
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
-    interviews: {}
+    interviews: {},
+    interviewers: []
   });
   
   const setDay = day => setState({ ...state, day });
   // const setDays = days => setState(prev => ({ ...prev, days }));
   
   const appointments = getAppointmentsForDay(state, state.day);
-
+  
+  
+  // console.log(interviewers)
+  
+  
+  
   useEffect(() => {
     console.log('fetch axios');
 
@@ -51,11 +60,18 @@ export default function Application(props) {
 }, [state.day])
 
 
-console.log(state.interviewers)
-  
-  const appointmentList = appointments.map(app => {
+
+const dayInterviews = getInterviewersByDay(state, state.day);
+
+const appointmentList = appointments.map(app => {
     const interview = getInterview(state, app.interview);
-    return <Appointment key={app.id} {...app} />
+    return <Appointment 
+    key={app.id}
+    id={app.id}
+    time={app.time}
+    interview={interview}
+    interviewers={dayInterviews}
+     />
   })
 
   return (

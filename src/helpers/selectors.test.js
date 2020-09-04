@@ -1,16 +1,18 @@
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersByDay } from "helpers/selectors";
 
 const state = {
   days: [
     {
       id: 1,
       name: "Monday",
-      appointments: [1, 2, 3]
+      appointments: [1, 2, 3],
+      interviewers: [1, 2, 3]
     },
     {
       id: 2,
       name: "Tuesday",
-      appointments: [4, 5]
+      appointments: [4, 5],
+      interviewers: [1, 2]
     }
   ],
   appointments: {
@@ -38,6 +40,11 @@ const state = {
     "2": {
       id: 2,
       name: "Tori Malcolm",
+      avatar: "https://i.imgur.com/Nmx0Qxo.png"
+    },
+    "3": {
+      id: 3,
+      name: "Tammy Boom",
       avatar: "https://i.imgur.com/Nmx0Qxo.png"
     }
   }
@@ -87,4 +94,30 @@ test("getInterview returns an object with the interviewer data", () => {
 test("getInterview returns null if no interview is booked", () => {
   const result = getInterview(state, state.appointments["2"].interview);
   expect(result).toBeNull();
+});
+
+test("getInterviewersByDay returns an array", () => {
+  const result = getInterviewersByDay(state, "Monday");
+  expect(Array.isArray(result)).toBe(true);
+});
+
+test("getInterviewersByDay returns an array with a length matching the number of interviewers for that day", () => {
+  const result = getInterviewersByDay(state, "Monday");
+  expect(result.length).toEqual(3);
+});
+
+test("getInterviewersByDay returns an array containing the correct interviewers objects", () => {
+  const [first, second] = getInterviewersByDay(state, "Tuesday");
+  expect(first).toEqual(state.interviewers["1"]);
+  expect(second).toEqual(state.interviewers["2"]);
+});
+
+test("getInterviewersByDay returns an empty array when the days data is empty", () => {
+  const result = getInterviewersByDay({ days: [] }, "Monday");
+  expect(result.length).toEqual(0);
+});
+
+test("getInterviewersByDay returns an empty array when the day is not found", () => {
+  const result = getInterviewersByDay(state, "Wednesday");
+  expect(result.length).toEqual(0);
 });
