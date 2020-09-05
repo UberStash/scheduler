@@ -74,15 +74,24 @@ export default function Application(props) {
     return Promise.resolve(
       axios
         .put(` http://localhost:8001/api/appointments/${id}`, appointment)
-        .then((response) => {
-          console.log(response);
-        })
+        // .then((response) => {
+        //   console.log(response);
+        // })
+        // .catch((error) => {
+        //   console.log(error, "HEy Im and ErrOr");
+        // })
     );
   }
 
   function cancelInterview(id) {
     console.log("Im in", id);
-    const appointment = {
+    
+
+       return Promise.resolve(
+          axios
+            .delete(` http://localhost:8001/api/appointments/${id}`)
+            .then((response) => {
+              const appointment = {
       ...state.appointments[id],
       interview: null,
     };
@@ -94,13 +103,8 @@ export default function Application(props) {
           ...state,
           appointments,
         });
-console.log(appointment)
-       return Promise.resolve(
-          axios
-            .delete(` http://localhost:8001/api/appointments/${id}`)
-            .then((response) => {
-              console.log(response);
-            })
+            })            //   console.log(error, "HEy Im and ErrOr");
+            // })
         );
       
   }
