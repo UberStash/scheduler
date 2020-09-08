@@ -9,6 +9,7 @@ import "./InterviewerList.scss";
 export default function InterviewerList(props) {
   const { interviewers, value, onChange } = props;
 
+
   const entityList = interviewers.map((entity) => {
     const { id, name, avatar } = entity;
     return (

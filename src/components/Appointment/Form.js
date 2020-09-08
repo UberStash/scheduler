@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import Button from "components/Button";
 import InterviewerList from "components/InterviewerList"
 
-export default function Confirm(props) {
+export default function Form(props) {
   // console.log(props)
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [name, setName] =useState(props.name || '')
+  const [error, setError] = useState("");
   
   function reset() {
     setName("");
@@ -19,7 +20,12 @@ export default function Confirm(props) {
   }
 
 function validate() {
-  props.onSave(name, interviewer)
+  if (name === "") {
+    setError("Student name cannot be blank");
+    return;
+  }
+  setError("");
+  props.onSave(name, interviewer);
 }
   
   return (
@@ -33,9 +39,11 @@ function validate() {
         onChange={event => {setName(event.target.value)}}
         submitted={"false"}
         placeholder={ props.student || "Enter Student Name"}
+        data-testid="student-name-input"
         
       />
     </form>
+    <section className="appointment__validation">{error}</section>
     <InterviewerList 
     interviewers={props.interviewers} 
     value={interviewer} 

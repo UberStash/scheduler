@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import axios from "axios";
+import { actions } from "@storybook/addon-actions/dist/preview";
 
 export default function useApplicationData() {
   //////////////////////////////////START STATE
@@ -43,36 +44,36 @@ export default function useApplicationData() {
       ...state.appointments[id],
       interview: { ...interview },
     };
-console.log('INTERVIEW', appointment)
+
     const appointments = {
       ...state.appointments,
       [id]: appointment,
     };
     
-    setState({
-      ...state,
-      appointments, 
-      days: spotsRemaining('a')
-    });
-
-    
-    
-    console.log(appointments)
-    
 
     return Promise.resolve(
       axios.put(` http://localhost:8001/api/appointments/${id}`, appointment)
     ).then (
-     
+      setState({
+        ...state,
+        appointments, 
+        days: spotsRemaining('delete')
+      })
     )
-    
+    // .catch (
+      // setState({
+      //   ...state,
+      //   appointments, 
+      //   days: spotsRemaining('netural')
+      // })
+    // )
   }
 
   const spotsRemaining = function (action) {
   let spots = 0
-    if (action === 'a') spots = -1;
-    if (action === 'd') spots = 1;
-  
+    if (action === 'delete') spots = -1;
+    if (action === 'add') spots = 1;
+    if (action === 'netural') spots = 0;
     
     for (let day in state.days) {
       if ((state.days[day].name === state.day)) {
@@ -109,13 +110,19 @@ console.log('INTERVIEW', appointment)
           setState({
             ...state,
             appointments,
-            days: spotsRemaining('d')
+            days: spotsRemaining('add')
           });
 
           
 
 console.log(state)
-        })
+        }).catch (
+          setState({
+            ...state,
+ 
+            // days: spotsRemaining()
+          })
+        )
     );
   }
 
