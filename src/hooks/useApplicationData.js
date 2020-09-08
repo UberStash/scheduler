@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 
 import axios from "axios";
-import { actions } from "@storybook/addon-actions/dist/preview";
+// import { actions } from "@storybook/addon-actions/dist/preview";
 
 export default function useApplicationData() {
   //////////////////////////////////START STATE
+  
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -18,18 +19,14 @@ export default function useApplicationData() {
 
   useEffect(() => {
     Promise.all([
-      Promise.resolve(
-        axios({ url: `http://localhost:8001/api/days`, method: "GET" })
-      ),
-      Promise.resolve(
-        axios({ url: `http://localhost:8001/api/appointments`, method: "GET" })
-      ),
-      Promise.resolve(
-        axios({ url: `http://localhost:8001/api/interviewers`, method: "GET" })
-      ),
+      
+        axios.get(`/api/days`),
+        axios.get(`/api/appointments`),
+        axios.get(`/api/interviewers`)
+      
     ]).then((all) => {
       setState((prev) => ({
-        day: state.day,
+        ...prev,
         days: all[0].data,
         appointments: all[1].data,
         interviewers: all[2].data,
@@ -52,7 +49,7 @@ export default function useApplicationData() {
     
 
     return Promise.resolve(
-      axios.put(` http://localhost:8001/api/appointments/${id}`, appointment)
+      axios.put(`/api/appointments/${id}`, appointment)
     ).then (
       setState({
         ...state,
@@ -94,7 +91,7 @@ export default function useApplicationData() {
   
     return Promise.resolve(
       axios
-        .delete(` http://localhost:8001/api/appointments/${id}`)
+        .delete(`/api/appointments/${id}`)
         .then((response) => {
           const appointment = {
             ...state.appointments[id],
