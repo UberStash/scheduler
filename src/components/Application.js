@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-
-
-
-
 import "components/Application.scss";
 import DayList from "components/DayList";
 import "components/Appointment";
@@ -19,7 +15,6 @@ export default function Application(props) {
   const {
     state,
     setDay,
-    setDays,
     bookInterview,
     cancelInterview,
   } = useApplicationData();

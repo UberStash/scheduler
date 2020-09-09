@@ -1,16 +1,17 @@
-import React from 'react'
+import React from "react";
 
-import "./InterviewerListItem.scss"
+import "./InterviewerListItem.scss";
 
 export default function InterviewerListItem(props) {
-
   const { name, avatar, selected, setInterviewer } = props;
-  const selectedClass = [selected && "interviewers__item--selected", selected && "interviewers__item--selected-image"];
+  const selectedClass = [
+    selected && "interviewers__item--selected",
+    selected && "interviewers__item--selected-image",
+  ];
 
   return (
     <li
       className={`interviewers__item ${selectedClass[0]}`}
-      alt={name}
       selected={selected}
       onClick={setInterviewer}
     >
@@ -21,7 +22,5 @@ export default function InterviewerListItem(props) {
       />
       {selected && name}
     </li>
-
-  )
-
-} 
+  );
+}

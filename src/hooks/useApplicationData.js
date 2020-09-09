@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default function useApplicationData() {
   //////////////////////////////////START STATE
-  
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -15,15 +15,12 @@ export default function useApplicationData() {
   });
 
   const setDay = (day) => setState({ ...state, day });
-  
 
   useEffect(() => {
     Promise.all([
-      
-        axios.get(`/api/days`),
-        axios.get(`/api/appointments`),
-        axios.get(`/api/interviewers`)
-      
+      axios.get(`/api/days`),
+      axios.get(`/api/appointments`),
+      axios.get(`/api/interviewers`),
     ]).then((all) => {
       setState((prev) => ({
         ...prev,
@@ -36,6 +33,8 @@ export default function useApplicationData() {
 
   ////////////////////////////////////////////// END STATE
 
+
+  // Creates interview object then makes put request, updates state to reflect changes 
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -46,49 +45,40 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment,
     };
-    
 
     return Promise.resolve(
       axios.put(`/api/appointments/${id}`, appointment)
-    ).then (
+    ).then(
       setState({
         ...state,
-        appointments, 
-        days: spotsRemaining('delete')
+        appointments,
+        days: spotsRemaining("delete"),
       })
-    )
-    // .catch (
-      // setState({
-      //   ...state,
-      //   appointments, 
-      //   days: spotsRemaining('netural')
-      // })
-    // )
-  }
-
-  const spotsRemaining = function (action) {
-  let spots = 0
-    if (action === 'delete') spots = -1;
-    if (action === 'add') spots = 1;
-    if (action === 'netural') spots = 0;
+    );
     
+  }
+// Calculates ammount of spots remaining
+  const spotsRemaining = function (action) {
+    let spots = 0;
+    if (action === "delete") spots = -1;
+    if (action === "add") spots = 1;
+    if (action === "netural") spots = 0;
+
     for (let day in state.days) {
-      if ((state.days[day].name === state.day)) {
+      if (state.days[day].name === state.day) {
         for (let id of state.days[day].appointments) {
-          console.log(id)
           if (state.appointments[id].interview === null) {
-            spots++
-            console.log(spots)
+            spots++;
           }
         }
       }
     }
-    return state.days.map((day) => { return day.name !== state.day ? day : { ...day, spots }})
-  }
-
-
+    return state.days.map((day) => {
+      return day.name !== state.day ? day : { ...day, spots };
+    });
+  };
+// Deletes interview from db and from state then refreshes with changes 
   function cancelInterview(id) {
-  
     return Promise.resolve(
       axios
         .delete(`/api/appointments/${id}`)
@@ -96,28 +86,24 @@ export default function useApplicationData() {
           const appointment = {
             ...state.appointments[id],
             interview: null,
-            test: true
+            test: true,
           };
           const appointments = {
             ...state.appointments,
             [id]: appointment,
           };
-          
 
           setState({
             ...state,
             appointments,
-            days: spotsRemaining('add')
+            days: spotsRemaining("add"),
           });
-
-          
-
-console.log(state)
-        }).catch (
+        })
+        .catch(
           setState({
             ...state,
- 
-            // days: spotsRemaining()
+
+            
           })
         )
     );
