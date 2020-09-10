@@ -7,17 +7,17 @@ export default function Form(props) {
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [name, setName] = useState(props.name || "");
   const [error, setError] = useState("");
-
+// resets interview
   function reset() {
     setName("");
     setInterviewer(null);
   }
-
+// cancels operation either new form edit or delete
   function cancel() {
     reset();
     props.onCancel();
   }
-
+// validates that the name must be enetered
   function validate() {
     if (name === "") {
       setError("Student name cannot be blank");

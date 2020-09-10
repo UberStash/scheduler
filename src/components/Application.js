@@ -12,6 +12,8 @@ import {
 } from "helpers/selectors";
 
 export default function Application(props) {
+  
+  // sets state
   const {
     state,
     setDay,

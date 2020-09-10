@@ -31,3 +31,10 @@ npm test
 ```sh
 npm run storybook
 ```
+!['When appointment has been deleted'](https://github.com/UberStash/scheduler/blob/master/docs/scheduler_delete.png?raw=true)
+
+!['When appointment is being edited'](https://github.com/UberStash/scheduler/blob/master/docs/scheduler_edit.png?raw=true)
+
+!['Main calendar'](https://github.com/UberStash/scheduler/blob/master/docs/scheduler_main.png?raw=true)
+
+!['When new appointment is being created'](https://github.com/UberStash/scheduler/blob/master/docs/scheduler_new.png?raw=true)
