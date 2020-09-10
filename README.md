@@ -1,5 +1,15 @@
 # Interview Scheduler
 
+An app that tracks and books interview time slots.
+
+## Technical Specifications
+- React
+- Webpack, Babel
+- Axios
+- Storybook, Webpack Dev Server, Jest, Testing Library
+- PostgreSQL
+
+
 ## Setup
 
 Install dependencies with `npm install`.
