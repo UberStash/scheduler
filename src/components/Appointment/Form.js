@@ -36,18 +36,20 @@ export default function Form(props) {
       props.onSave(name, interviewer);
   }
 console.log(props)
-  return (
+ 
+const prevName = props.student;
+
+return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
         <form autoComplete="off" onSubmit={(event) => event.preventDefault()}>
           <input
             className="appointment__create-input text--semi-bold"
-            name={name}
-            value={name || props.student}
-            onChange={(event) => {
-              setName(event.target.value);
-            }}
-            submitted={"false"}
+            // name={name}
+            type="text"
+            value={ name || props.student}
+            onChange={(event) => setName(event.target.value)}
+            // submitted={"false"}
             placeholder={"Enter Student Name"}
             data-testid="student-name-input"
           />
