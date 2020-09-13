@@ -4,7 +4,7 @@ import axios from "axios";
 // import { actions } from "@storybook/addon-actions/dist/preview";
 
 export default function useApplicationData() {
-  //////////////////////////////////START STATE
+ 
 
   const [state, setState] = useState({
     day: "Monday",
@@ -35,7 +35,14 @@ export default function useApplicationData() {
 
 
   // Creates interview object then makes put request, updates state to reflect changes 
-  function bookInterview(id, interview) {
+  function bookInterview(id, interview, edit) {
+    let action = "delete"
+if (edit) {
+  action = "edit"
+}
+
+    
+    
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -52,17 +59,18 @@ export default function useApplicationData() {
       setState({
         ...state,
         appointments,
-        days: spotsRemaining("delete"),
+        days: spotsRemaining(action),
       })
     );
     
   }
 // Calculates ammount of spots remaining
   const spotsRemaining = function (action) {
+    console.log(action)
     let spots = 0;
     if (action === "delete") spots = -1;
     if (action === "add") spots = 1;
-    if (action === "netural") spots = 0;
+    if (action === "edit") spots = 0;
 
     for (let day in state.days) {
       if (state.days[day].name === state.day) {

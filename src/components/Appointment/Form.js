@@ -19,14 +19,23 @@ export default function Form(props) {
   }
 // validates that the name must be enetered
   function validate() {
-    if (name === "") {
+    if (!name) {
       setError("Student name cannot be blank");
       return;
     }
+    if (interviewer === null) {
+      setError("You must select an interviewer");
+      return;
+    }
+    if(props.edit){
+      setError("");
+      props.onSave(name, interviewer, 'edit');
+      return;  
+    }
     setError("");
-    props.onSave(name, interviewer);
+      props.onSave(name, interviewer);
   }
-
+console.log(props)
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
@@ -34,19 +43,20 @@ export default function Form(props) {
           <input
             className="appointment__create-input text--semi-bold"
             name={name}
-            value={name}
+            value={name || props.student}
             onChange={(event) => {
               setName(event.target.value);
             }}
             submitted={"false"}
-            placeholder={props.student || "Enter Student Name"}
+            placeholder={"Enter Student Name"}
             data-testid="student-name-input"
           />
         </form>
         <section className="appointment__validation">{error}</section>
         <InterviewerList
+          
           interviewers={props.interviewers}
-          value={interviewer}
+          value={interviewer || props.interviewer}
           onChange={setInterviewer}
         />
       </section>
