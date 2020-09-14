@@ -3,21 +3,20 @@ import Button from "components/Button";
 import InterviewerList from "components/InterviewerList";
 
 export default function Form(props) {
-  
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [name, setName] = useState(props.name || "");
   const [error, setError] = useState("");
-// resets interview
+  // resets interview
   function reset() {
     setName("");
     setInterviewer(null);
   }
-// cancels operation either new form edit or delete
+  // cancels operation either new form edit or delete
   function cancel() {
     reset();
     props.onCancel();
   }
-// validates that the name must be enetered
+  // validates that the name must be enetered
   function validate() {
     if (!name) {
       setError("Student name cannot be blank");
@@ -27,36 +26,38 @@ export default function Form(props) {
       setError("You must select an interviewer");
       return;
     }
-    if(props.edit){
+    if (props.edit) {
       setError("");
-      props.onSave(name, interviewer, 'edit');
-      return;  
+      props.onSave(name, interviewer, "edit");
+      return;
     }
     setError("");
-      props.onSave(name, interviewer);
+    props.onSave(name, interviewer);
   }
-console.log(props)
- 
-const prevName = props.student;
 
-return (
+  function checkName () {
+    if (!name) {
+      console.log("win")
+      return props.student
+    }
+  }
+  console.log(props);
+
+  return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
         <form autoComplete="off" onSubmit={(event) => event.preventDefault()}>
           <input
             className="appointment__create-input text--semi-bold"
-            // name={name}
             type="text"
-            value={ name || props.student}
+            value={checkName()}
             onChange={(event) => setName(event.target.value)}
-            // submitted={"false"}
             placeholder={"Enter Student Name"}
             data-testid="student-name-input"
           />
         </form>
         <section className="appointment__validation">{error}</section>
         <InterviewerList
-          
           interviewers={props.interviewers}
           value={interviewer || props.interviewer}
           onChange={setInterviewer}
