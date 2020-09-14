@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 import axios from "axios";
-// import { actions } from "@storybook/addon-actions/dist/preview";
 
 export default function useApplicationData() {
  
@@ -31,7 +30,7 @@ export default function useApplicationData() {
     });
   }, [state.day]);
 
-  ////////////////////////////////////////////// END STATE
+
 
 
   // Creates interview object then makes put request, updates state to reflect changes 
@@ -66,7 +65,6 @@ if (edit) {
   }
 // Calculates ammount of spots remaining
   const spotsRemaining = function (action) {
-    console.log(action)
     let spots = 0;
     if (action === "delete") spots = -1;
     if (action === "add") spots = 1;
