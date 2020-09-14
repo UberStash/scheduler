@@ -35,12 +35,7 @@ export default function Form(props) {
     props.onSave(name, interviewer);
   }
 
-  function checkName () {
-    if (!name) {
-      console.log("win")
-      return props.student
-    }
-  }
+  
   console.log(props);
 
   return (
@@ -50,7 +45,7 @@ export default function Form(props) {
           <input
             className="appointment__create-input text--semi-bold"
             type="text"
-            value={checkName()}
+            value={name || props.student}
             onChange={(event) => setName(event.target.value)}
             placeholder={"Enter Student Name"}
             data-testid="student-name-input"
