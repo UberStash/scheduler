@@ -60,7 +60,12 @@ if (edit) {
         appointments,
         days: spotsRemaining(action),
       })
-    );
+    ).catch(
+      setState({
+        ...state,
+      
+      })
+    )
     
   }
 // Calculates ammount of spots remaining
@@ -108,8 +113,7 @@ if (edit) {
         .catch(
           setState({
             ...state,
-
-            
+          
           })
         )
     );
