@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 
 import axios from "axios";
+import { spotsRemaining } from "helpers/selectors";
 
 export default function useApplicationData() {
- 
-
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -30,18 +29,13 @@ export default function useApplicationData() {
     });
   }, [state.day]);
 
-
-
-
-  // Creates interview object then makes put request, updates state to reflect changes 
+  // Creates interview object then makes put request, updates state to reflect changes
   function bookInterview(id, interview, edit) {
-    let action = "delete"
-if (edit) {
-  action = "edit"
-}
+    let action = "delete";
+    if (edit) {
+      action = "edit";
+    }
 
-    
-    
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -52,46 +46,23 @@ if (edit) {
       [id]: appointment,
     };
 
-    return Promise.resolve(
-      axios.put(`/api/appointments/${id}`, appointment)
-    ).then(
-      setState({
-        ...state,
-        appointments,
-        days: spotsRemaining(action),
-      })
-    ).catch(
-      setState({
-        ...state,
-      
-      })
-    )
-    
-  }
-// Calculates ammount of spots remaining
-  const spotsRemaining = function (action) {
-    let spots = 0;
-    if (action === "delete") spots = -1;
-    if (action === "add") spots = 1;
-    if (action === "edit") spots = 0;
+    return axios.put(`/api/appointments/${id}`, appointment)
+      .then( () =>
+        setState({
+          ...state,
+          appointments,
+          
+        })
+      ).then(() =>
+      setState(spotsRemaining)
 
-    for (let day in state.days) {
-      if (state.days[day].name === state.day) {
-        for (let id of state.days[day].appointments) {
-          if (state.appointments[id].interview === null) {
-            spots++;
-          }
-        }
-      }
-    }
-    return state.days.map((day) => {
-      return day.name !== state.day ? day : { ...day, spots };
-    });
-  };
-// Deletes interview from db and from state then refreshes with changes 
+      )
+      
+  }
+ 
+  // Deletes interview from db and from state then refreshes with changes
   function cancelInterview(id) {
-    return Promise.resolve(
-      axios
+    return axios
         .delete(`/api/appointments/${id}`)
         .then((response) => {
           const appointment = {
@@ -107,16 +78,14 @@ if (edit) {
           setState({
             ...state,
             appointments,
-            days: spotsRemaining("add"),
+            
           });
-        })
-        .catch(
-          setState({
-            ...state,
-          
-          })
-        )
-    );
+        }
+        ).then(() =>
+      setState(spotsRemaining)
+
+      )
+    
   }
 
   return {

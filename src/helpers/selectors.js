@@ -29,3 +29,14 @@ export function getInterviewersByDay(state, day) {
   result = date[0].interviewers.map((person) => state.interviewers[person]);
   return result;
 }
+
+ // Calculates ammount of spots remaining
+ export const spotsRemaining = function (state) {
+
+  const days = state.days.map((day) => {
+    // return day.name !== state.day ? day : { ...day, spots };
+    const spots = day.appointments.filter((id) => state.appointments[id].interview === null).length;
+    return {...day, spots}
+  });
+  return {...state, days}
+};
